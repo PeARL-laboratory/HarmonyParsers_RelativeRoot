@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB R2019a"><title>Parse the chord symbols in the Rolling Stone data set using the Relative Root encoding scheme.</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.7999992370605px; min-height: 0px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: normal; text-align: left;  }
+.S1 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: normal; text-align: left;  }
+.S2 { border-left: 0px none rgb(0, 0, 0); border-right: 0px none rgb(0, 0, 0); border-top: 0px none rgb(0, 0, 0); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 0px; line-height: 16px; min-height: 0px; white-space: pre; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, 'Courier New', monospace; font-size: 12px;  }
+.S3 { margin: 20px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: bold; text-align: left;  }
+.CodeBlock { background-color: #F7F7F7; margin: 10px 0 10px 0;}
+.S4 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 17.2339992523193px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, 'Courier New', monospace; font-size: 14px;  }
+.S5 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 17.2339992523193px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, 'Courier New', monospace; font-size: 14px;  }
+.S6 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 17.2339992523193px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, 'Courier New', monospace; font-size: 14px;  }
+.S7 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: bold; text-align: left;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span>Parse the chord symbols in the Rolling Stone data set using the Relative Root encoding scheme.</span></h1><div  class = 'S1'><span style=' font-weight: bold;'>Rolling Stone DATA SET</span></div><div class = 'preformatted-matlab' style = 'margin: 10px 3px 10px 55px; padding: 10px 10px 10px 5px; '><div  class = 'S2'><span style="white-space: pre;"><span>Download: &lt;http://rockcorpus.midside.com/index.html&gt;</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>Citation: Declercq, T., &amp; Temperley, D. (2011). A corpus </span><span style="color: rgb(255, 0, 255);">analysis of </span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>          rock </span><span style="color: rgb(255, 0, 255);">harmony. Popular Music</span><span>, 30, 47-70. </span></span></div></div><div  class = 'S1'><span style=' font-weight: bold;'>PARSE -- Relative Root Representation</span><span> </span></div><div class = 'preformatted-matlab' style = 'margin: 10px 3px 10px 55px; padding: 10px 10px 10px 5px; '><div  class = 'S2'><span style="white-space: pre;"><span>Encoding:    &lt;RN&gt;&lt;Quality&gt;&lt;Inversion&gt;&lt;Extensions&gt;</span></span></div></div><div class = 'preformatted-plain' style = 'margin: 10px 3px 10px 55px; padding: 10px 10px 10px 5px; '><div  class = 'S2'><span style="white-space: pre;"><span>   RN         -- Roman numeral encoded in relation to the key. Case</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                 denotes quality of the triad (major or minor).</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                 Named chords (+6, Ct, etc.) are converted to RN roots,</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                 with the names included in the quality slot (e.g., </span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                 #ivGer). Applied dominants (e.g., V/ii) receive </span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                 diatonic equivalents. Chords may also be preceded by a</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                 chromatic accidental relative to the major scale </span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                 (e.g., viio/V --&gt; #ivo):</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                     --  double flat</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                      -  flat </span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                      #  sharp</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                     ##  double sharp</span></span></div></div><div class = 'preformatted-plain' style = 'margin: 10px 3px 10px 55px; padding: 10px 10px 10px 5px; '><div  class = 'S2'><span style="white-space: pre;"><span>   Quality    -- Chord quality: </span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                      M  major seventh (never annotated in this data</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                         set)</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                         minor seventh (no symbol)</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                      h  half-diminished seventh</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                      o  diminished triad or seventh</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                      +  augmented</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                    Ger  German augmented sixth (never annotated in this</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                         data set)</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                     Fr  French augmented sixth (never annotated in this</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                         data set)</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                     It  Italian augmented sixth (never annotated in</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                         this data set)</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                     Ct  Common-tone diminished seventh (never annotated</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                         in this data set)</span></span></div></div><div class = 'preformatted-plain' style = 'margin: 10px 3px 10px 55px; padding: 10px 10px 10px 5px; '><div  class = 'S2'><span style="white-space: pre;"><span>   Inversion  -- Chord inversion:</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                         root position (no symbol)</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                      6  first inversion triad</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                     64  second inversion triad</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                      7  root position seventh</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                     65  first inversion seventh</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                     43  second inversion seventh</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                     42  third inversion seventh </span></span></div></div><div class = 'preformatted-plain' style = 'margin: 10px 3px 10px 55px; padding: 10px 10px 10px 5px; '><div  class = 'S2'><span style="white-space: pre;"><span>   Extensions -- Suspensions or added tones appear in parentheses, with</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                 added tones preceded by '+'.</span></span></div></div><div class = 'preformatted-matlab' style = 'margin: 10px 3px 10px 55px; padding: 10px 10px 10px 5px; '><div  class = 'S2'><span style="white-space: pre;"><span>Example:     V(64) (i.e., a cadential six-four)</span></span></div></div><div  class = 'S1'><span style=' font-weight: bold;'>DEPENDENCIES</span></div><div class = 'preformatted-plain' style = 'margin: 10px 3px 10px 55px; padding: 10px 10px 10px 5px; '><div  class = 'S2'><span style="white-space: pre;"><span>              -- None.</span></span></div></div><div  class = 'S1'><span style=' font-weight: bold;'>HISTORY</span></div><div class = 'preformatted-matlab' style = 'margin: 10px 3px 10px 55px; padding: 10px 10px 10px 5px; '><div  class = 'S2'><span style="white-space: pre;"><span>Date:          2.16.2021          </span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>Time:          16:33	</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>Programmer:    David Sears	    </span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>Version:       MATLAB 9.6 (R2019a, PC)</span></span></div></div><h2  class = 'S3'><span>IMPORT</span></h2><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span style="color: rgb(0, 255, 0);">% Files.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>cd(</span><span style="color: rgb(255, 0, 255);">'&lt;file_path&gt;\RS_200\rs200_harmony_exp\rs200_harmony_exp'</span><span>)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>files = dir(</span><span style="color: rgb(255, 0, 255);">'*dt.txt'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>files = {files.name}';</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>len = length(files);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>fnames = extractBefore(files,</span><span style="color: rgb(255, 0, 255);">'.txt'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>fnames = replace(fnames,</span><span style="color: rgb(255, 0, 255);">'-'</span><span>,</span><span style="color: rgb(255, 0, 255);">'_'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>fnames = strcat(</span><span style="color: rgb(255, 0, 255);">'RollingStone_'</span><span>,fnames);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 0);">% Variables</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>RNs = {</span><span style="color: rgb(255, 0, 255);">'--IV' '--I' '--V' '--II' '--VI' '--III' '--VII'</span><span>  </span><span style="color: rgb(0, 255, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>       </span><span style="color: rgb(255, 0, 255);">'-IV' '-I' '-V' '-II' '-VI' '-III' '-VII'</span><span>  </span><span style="color: rgb(0, 255, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>       </span><span style="color: rgb(255, 0, 255);">'IV' 'I' 'V' 'II' 'VI' 'III' 'VII'</span><span>  </span><span style="color: rgb(0, 255, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>       </span><span style="color: rgb(255, 0, 255);">'#IV' '#I' '#V' '#II' '#VI' '#III' '#VII' </span><span style="color: rgb(0, 255, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>       </span><span style="color: rgb(255, 0, 255);">'##IV' '##I' '##V' '##II' '##VI' '##III' '##VII'</span><span>};     </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 255);">for </span><span>i = 1:len</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 0);">% Import file.</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre;"><span>    tmp = importdata(files{i});</span></span></div></div></div><h2  class = 'S7'><span>PREPROCESS</span></h2><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 0);">% Delete line with warning from tmp.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 255);">if </span><span>length(tmp)&gt;1</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        idx = find(contains(tmp,</span><span style="color: rgb(255, 0, 255);">'Warning'</span><span>));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        tmp(</span><span class="warning_squiggle_rte warningHighlight">idx</span><span>) = [];</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 0);">% Tokenize</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    chords = split(tmp);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 0);">% Delete empty cells.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    chords = chords(~cellfun(@isempty, chords));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 0);">% Replace dots with preceding RN.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    x = any(ismember(chords,</span><span style="color: rgb(255, 0, 255);">'.'</span><span>));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 255);">while </span><span>x==1</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        idx = find(ismember(chords,</span><span style="color: rgb(255, 0, 255);">'.'</span><span>));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        chords(idx) = chords(idx-1);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        x = any(ismember(chords,</span><span style="color: rgb(255, 0, 255);">'.'</span><span>));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 0);">% Delete tokens with special characters not relating to the RNs.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    del = {</span><span style="color: rgb(255, 0, 255);">'[' ']' '|' 'R'</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    idx = find(contains(chords,del));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    chords(</span><span class="warning_squiggle_rte warningHighlight">idx</span><span>) = [];</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 0);">% Save raw chord tokens.</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre;"><span>    RollingStone.chords.(fnames{i}) = chords; </span><span style="color: rgb(0, 255, 0);">% RNs</span></span></div></div></div><h2  class = 'S7'><span>CONVERT</span></h2><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 0);">% Replace flat symbol.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    chords = replace(chords,</span><span style="color: rgb(255, 0, 255);">'b'</span><span>,</span><span style="color: rgb(255, 0, 255);">'-'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 0);">% Replace 'a' with '+'.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    chords = replace(chords,</span><span style="color: rgb(255, 0, 255);">'a'</span><span>,</span><span style="color: rgb(255, 0, 255);">'+'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 0);">% Replace 'x' with 'o'.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    chords = replace(chords,</span><span style="color: rgb(255, 0, 255);">'x'</span><span>,</span><span style="color: rgb(255, 0, 255);">'o'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 0);">% Create extensions and replace 's' symbol (for 'sus').</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    chords = replace(chords,</span><span style="color: rgb(255, 0, 255);">'11'</span><span>,</span><span style="color: rgb(255, 0, 255);">'7(11)'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 0);">% Add cadential six-four 'V(64)' to I64-V progressions.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    idx = find(strcmp(chords,</span><span style="color: rgb(255, 0, 255);">'I64'</span><span>));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    idx2 = find(strcmp(chords,</span><span style="color: rgb(255, 0, 255);">'i64'</span><span>));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    idx = union(idx,idx2);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    tmp = [chords(idx) chords(idx+1)];</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 255);">if </span><span>~isempty(tmp)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        change = contains(tmp(:,2),{</span><span style="color: rgb(255, 0, 255);">'V7' 'V/'</span><span>}) | strcmp(tmp(:,2),</span><span style="color: rgb(255, 0, 255);">'V'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        tmp = tmp(:,1);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        relroot = extractAfter(tmp,</span><span style="color: rgb(255, 0, 255);">'/'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        relroot = strcat(</span><span style="color: rgb(255, 0, 255);">'/'</span><span>,relroot);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        relroot(strcmp(relroot,</span><span style="color: rgb(255, 0, 255);">'/'</span><span>)) = {</span><span style="color: rgb(255, 0, 255);">''</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        tmp(change) = {</span><span style="color: rgb(255, 0, 255);">'V(64)'</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        tmp(change) = strcat(tmp(change),relroot(change));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        chords(idx) = tmp;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 0);">% Add parentheses to all other sus chords (e.g., 'I(4)').</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    idx = find(contains(chords,</span><span style="color: rgb(255, 0, 255);">'s'</span><span>));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    chords(idx) = replace(chords(idx),</span><span style="color: rgb(255, 0, 255);">'s'</span><span>,</span><span style="color: rgb(255, 0, 255);">'('</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    chords(idx) = strcat(chords(idx),</span><span style="color: rgb(255, 0, 255);">')'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 0);">% Add parentheses to chords with '5' following the RN (presumably power</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 0);">% chords).</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    chords = replace(chords,</span><span style="color: rgb(255, 0, 255);">'-5'</span><span>,</span><span style="color: rgb(255, 0, 255);">'(-5)'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 0);">% Get rid of applied chords of I (bug in the corpus).</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    chords = regexprep(chords,</span><span style="color: rgb(255, 0, 255);">'[/]+I$'</span><span>,</span><span style="color: rgb(255, 0, 255);">''</span><span>,</span><span style="color: rgb(255, 0, 255);">'ignorecase'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 0);">% Convert applied chords to diatonic space.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    applied_idx = find(contains(chords,</span><span style="color: rgb(255, 0, 255);">'/'</span><span>));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 255);">if </span><span>~isempty(applied_idx)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        applied = chords(applied_idx);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% Create numerator and denominator of applied chords.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        [num_1 </span><span class="warning_squiggle_rte warningHighlight">den</span><span>] = strtok(applied,</span><span style="color: rgb(255, 0, 255);">'/'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        num = regexprep(num_1,</span><span style="color: rgb(255, 0, 255);">'[^vViI]'</span><span>,</span><span style="color: rgb(255, 0, 255);">''</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        den = erase(den,</span><span style="color: rgb(255, 0, 255);">'/'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% Index for adding 'd' for V7/ and its inversions.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        dom_idx = find(strcmp(num,</span><span style="color: rgb(255, 0, 255);">'V'</span><span>) &amp; contains(num_1,{</span><span style="color: rgb(255, 0, 255);">'7' '65' '43' '42'</span><span>}));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% Determine relative root for applied chords.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        [~,den_idx] = ismember(upper(den),RNs);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        [~,num_idx] = ismember(upper(num),RNs);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        [~,tonic_idx] = ismember(</span><span style="color: rgb(255, 0, 255);">'I'</span><span>,RNs);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        root_idx = mod(num_idx-tonic_idx + den_idx,length(RNs));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        roots = </span><span class="warning_squiggle_rte">[</span><span>RNs(root_idx)]';</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% Ensure relative root reflects quality of numerator chord.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        idx = isstrprop(num,</span><span style="color: rgb(255, 0, 255);">'upper'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 255);">for </span><span>j = 1:length(idx)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            </span><span style="color: rgb(0, 255, 255);">if </span><span>any(idx{j})==1</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>                idx2(j,1) = 1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            </span><span style="color: rgb(0, 255, 255);">else </span><span class="warning_squiggle_rte">idx2</span><span>(j,1) = 0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            </span><span style="color: rgb(0, 255, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        idx = idx2;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        roots(idx==0) = lower(roots(idx==0));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% Include other symbols from numerator chord to root (e.g., 'o' '+').</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        num = regexprep(num_1,</span><span style="color: rgb(255, 0, 255);">'[^ho+123456789]'</span><span>,</span><span style="color: rgb(255, 0, 255);">''</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        roots(dom_idx) = strcat(roots(dom_idx),</span><span style="color: rgb(255, 0, 255);">'d'</span><span>); </span><span style="color: rgb(0, 255, 0);">% Add 'd' for Mm7ths</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        roots = strcat(roots,num);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        chords(applied_idx) = roots;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        clear </span><span style="color: rgb(255, 0, 255);">applied_idx applied dom_idx num_1 den num den_idx num_idx tonic_idx root_idx roots idx roots idx2</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 0);">% Add to structure.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    RollingStone.RNs.(fnames{i}) = chords; </span><span style="color: rgb(0, 255, 0);">% RNs</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    RollingStone.rootRNs.(fnames{i}) = regexprep(chords,</span><span style="color: rgb(255, 0, 255);">'[^-#vViI]'</span><span>,</span><span style="color: rgb(255, 0, 255);">''</span><span>); </span><span style="color: rgb(0, 255, 0);">% RN roots</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    clear </span><span style="color: rgb(255, 0, 255);">tmp chords del idx x</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 0);">% Alphabet</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 255);">for </span><span>i=1:len</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    sequence.(fnames{i}) = cellstr(RollingStone.RNs.(fnames{i}));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>chords = cellfun(@(x) cellstr(sequence.(x)), fnames, </span><span style="color: rgb(255, 0, 255);">'UniformOutput'</span><span>, false);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>alphabet = unique(vertcat(chords{:}));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>RollingStone.fnames = fnames;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>RollingStone.alphabet = alphabet;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 0);">% Add years for songs.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>cd(</span><span style="color: rgb(255, 0, 255);">'&lt;file_path&gt;\RS_200'</span><span>)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>tmp = readtable(</span><span style="color: rgb(255, 0, 255);">'song_list_DS.csv'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>fnames_new = tmp.fname;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>fnames_new = erase(fnames_new,</span><span style="color: rgb(255, 0, 255);">''''</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>fnames_new = replace(fnames_new,</span><span style="color: rgb(255, 0, 255);">'-'</span><span>,</span><span style="color: rgb(255, 0, 255);">'_'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>fnames_new = replace(fnames_new,</span><span style="color: rgb(255, 0, 255);">'miind'</span><span>,</span><span style="color: rgb(255, 0, 255);">'mind'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>fnames_new = replace(fnames_new,</span><span style="color: rgb(255, 0, 255);">'nite'</span><span>,</span><span style="color: rgb(255, 0, 255);">'night'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>fnames_new = erase(fnames_new,</span><span style="color: rgb(255, 0, 255);">'_perkins'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>fnames = erase(fnames,</span><span style="color: rgb(255, 0, 255);">'RollingStone_'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>fnames = erase(fnames,</span><span style="color: rgb(255, 0, 255);">'_dt'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>[~,idx] = ismember(fnames,fnames_new);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>year = tmp.year(idx);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>RollingStone.year = year;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>cd(</span><span style="color: rgb(255, 0, 255);">'&lt;destination_file_path&gt;'</span><span>)</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre;"><span>save(</span><span style="color: rgb(255, 0, 255);">'RollingStone.mat'</span><span>,</span><span style="color: rgb(255, 0, 255);">'RollingStone'</span><span>)</span></span></div></div></div></div>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% Parse the chord symbols in the Rolling Stone data set using the Relative Root encoding scheme.
+% *Rolling Stone DATA SET*
+%%
+% 
+%   Download: <http://rockcorpus.midside.com/index.html>
+%   Citation: Declercq, T., & Temperley, D. (2011). A corpus analysis of 
+%             rock harmony. Popular Music, 30, 47-70. 
+%
+%% 
+% *PARSE REPLACE_WITH_DASH_DASH Relative Root Representation* 
+%%
+% 
+%   Encoding:    <RN><Quality><Inversion><Extensions>
+%
+%%
+% 
+%     RN         REPLACE_WITH_DASH_DASH Roman numeral encoded in relation to the key. Case
+%                   denotes quality of the triad (major or minor).
+%                   Named chords (+6, Ct, etc.) are converted to RN roots,
+%                   with the names included in the quality slot (e.g., 
+%                   #ivGer). Applied dominants (e.g., V/ii) receive 
+%                   diatonic equivalents. Chords may also be preceded by a
+%                   chromatic accidental relative to the major scale 
+%                   (e.g., viio/V REPLACE_WITH_DASH_DASH> #ivo):
+%                       REPLACE_WITH_DASH_DASH  double flat
+%                        -  flat 
+%                        #  sharp
+%                       ##  double sharp
+%
+%%
+% 
+%     Quality    REPLACE_WITH_DASH_DASH Chord quality: 
+%                        M  major seventh (never annotated in this data
+%                           set)
+%                           minor seventh (no symbol)
+%                        h  half-diminished seventh
+%                        o  diminished triad or seventh
+%                        +  augmented
+%                      Ger  German augmented sixth (never annotated in this
+%                           data set)
+%                       Fr  French augmented sixth (never annotated in this
+%                           data set)
+%                       It  Italian augmented sixth (never annotated in
+%                           this data set)
+%                       Ct  Common-tone diminished seventh (never annotated
+%                           in this data set)
+%
+%%
+% 
+%     Inversion  REPLACE_WITH_DASH_DASH Chord inversion:
+%                           root position (no symbol)
+%                        6  first inversion triad
+%                       64  second inversion triad
+%                        7  root position seventh
+%                       65  first inversion seventh
+%                       43  second inversion seventh
+%                       42  third inversion seventh 
+%
+%%
+% 
+%     Extensions REPLACE_WITH_DASH_DASH Suspensions or added tones appear in parentheses, with
+%                   added tones preceded by '+'.
+%
+%%
+% 
+%   Example:     V(64) (i.e., a cadential six-four)
+%
+%% 
+% *DEPENDENCIES*
+%%
+% 
+%                REPLACE_WITH_DASH_DASH None.
+%
+%% 
+% *HISTORY*
+%%
+% 
+%   Date:          2.16.2021          
+%   Time:          16:33	
+%   Programmer:    David Sears	    
+%   Version:       MATLAB 9.6 (R2019a, PC)
+%
+%% IMPORT
+
+% Files.
+cd('<file_path>\RS_200\rs200_harmony_exp\rs200_harmony_exp')
+files = dir('*dt.txt');
+files = {files.name}';
+len = length(files);
+fnames = extractBefore(files,'.txt');
+fnames = replace(fnames,'-','_');
+fnames = strcat('RollingStone_',fnames);
+
+
+% Variables
+RNs = {'REPLACE_WITH_DASH_DASHIV' 'REPLACE_WITH_DASH_DASHI' 'REPLACE_WITH_DASH_DASHV' 'REPLACE_WITH_DASH_DASHII' 'REPLACE_WITH_DASH_DASHVI' 'REPLACE_WITH_DASH_DASHIII' 'REPLACE_WITH_DASH_DASHVII'  ...
+       '-IV' '-I' '-V' '-II' '-VI' '-III' '-VII'  ...
+       'IV' 'I' 'V' 'II' 'VI' 'III' 'VII'  ...
+       '#IV' '#I' '#V' '#II' '#VI' '#III' '#VII' ...
+       '##IV' '##I' '##V' '##II' '##VI' '##III' '##VII'};     
+for i = 1:len
+    
+    % Import file.
+    tmp = importdata(files{i});
+%% PREPROCESS
+
+    % Delete line with warning from tmp.
+    if length(tmp)>1
+        idx = find(contains(tmp,'Warning'));
+        tmp(idx) = [];
+    end
+    
+    % Tokenize
+    chords = split(tmp);
+    
+    % Delete empty cells.
+    chords = chords(~cellfun(@isempty, chords));
+    
+    % Replace dots with preceding RN.
+    x = any(ismember(chords,'.'));
+    while x==1
+        idx = find(ismember(chords,'.'));
+        chords(idx) = chords(idx-1);
+        x = any(ismember(chords,'.'));
+    end
+    
+    % Delete tokens with special characters not relating to the RNs.
+    del = {'[' ']' '|' 'R'};
+    idx = find(contains(chords,del));
+    chords(idx) = [];
+    
+    % Save raw chord tokens.
+    RollingStone.chords.(fnames{i}) = chords; % RNs
+%% CONVERT
+
+    % Replace flat symbol.
+    chords = replace(chords,'b','-');
+    
+    % Replace 'a' with '+'.
+    chords = replace(chords,'a','+');
+    
+    % Replace 'x' with 'o'.
+    chords = replace(chords,'x','o');
+    
+    % Create extensions and replace 's' symbol (for 'sus').
+    chords = replace(chords,'11','7(11)');
+    
+    % Add cadential six-four 'V(64)' to I64-V progressions.
+    idx = find(strcmp(chords,'I64'));
+    idx2 = find(strcmp(chords,'i64'));
+    idx = union(idx,idx2);
+    tmp = [chords(idx) chords(idx+1)];
+    if ~isempty(tmp)
+        change = contains(tmp(:,2),{'V7' 'V/'}) | strcmp(tmp(:,2),'V');
+        tmp = tmp(:,1);
+        relroot = extractAfter(tmp,'/');
+        relroot = strcat('/',relroot);
+        relroot(strcmp(relroot,'/')) = {''};
+        tmp(change) = {'V(64)'};
+        tmp(change) = strcat(tmp(change),relroot(change));
+        chords(idx) = tmp;
+    end
+    
+    % Add parentheses to all other sus chords (e.g., 'I(4)').
+    idx = find(contains(chords,'s'));
+    chords(idx) = replace(chords(idx),'s','(');
+    chords(idx) = strcat(chords(idx),')');
+    
+    % Add parentheses to chords with '5' following the RN (presumably power
+    % chords).
+    chords = replace(chords,'-5','(-5)');
+    
+    % Get rid of applied chords of I (bug in the corpus).
+    chords = regexprep(chords,'[/]+I$','','ignorecase');
+    
+    % Convert applied chords to diatonic space.
+    applied_idx = find(contains(chords,'/'));
+    
+    if ~isempty(applied_idx)
+        applied = chords(applied_idx);
+        
+        % Create numerator and denominator of applied chords.
+        [num_1 den] = strtok(applied,'/');
+        num = regexprep(num_1,'[^vViI]','');
+        den = erase(den,'/');
+        
+        % Index for adding 'd' for V7/ and its inversions.
+        dom_idx = find(strcmp(num,'V') & contains(num_1,{'7' '65' '43' '42'}));
+        
+        % Determine relative root for applied chords.
+        [~,den_idx] = ismember(upper(den),RNs);
+        [~,num_idx] = ismember(upper(num),RNs);
+        [~,tonic_idx] = ismember('I',RNs);
+        root_idx = mod(num_idx-tonic_idx + den_idx,length(RNs));
+        roots = [RNs(root_idx)]';
+        
+        % Ensure relative root reflects quality of numerator chord.
+        idx = isstrprop(num,'upper');
+        for j = 1:length(idx)
+            if any(idx{j})==1
+                idx2(j,1) = 1;
+            else idx2(j,1) = 0;
+            end
+        end
+        idx = idx2;
+        roots(idx==0) = lower(roots(idx==0));
+
+        % Include other symbols from numerator chord to root (e.g., 'o' '+').
+        num = regexprep(num_1,'[^ho+123456789]','');
+        roots(dom_idx) = strcat(roots(dom_idx),'d'); % Add 'd' for Mm7ths
+        roots = strcat(roots,num);
+
+        chords(applied_idx) = roots;
+        clear applied_idx applied dom_idx num_1 den num den_idx num_idx tonic_idx root_idx roots idx roots idx2
+    end
+    
+    % Add to structure.
+    RollingStone.RNs.(fnames{i}) = chords; % RNs
+    RollingStone.rootRNs.(fnames{i}) = regexprep(chords,'[^-#vViI]',''); % RN roots
+    
+    clear tmp chords del idx x
+    
+end
+
+% Alphabet
+for i=1:len
+    sequence.(fnames{i}) = cellstr(RollingStone.RNs.(fnames{i}));
+end
+chords = cellfun(@(x) cellstr(sequence.(x)), fnames, 'UniformOutput', false);
+alphabet = unique(vertcat(chords{:}));
+RollingStone.fnames = fnames;
+RollingStone.alphabet = alphabet;
+
+% Add years for songs.
+cd('<file_path>\RS_200')
+tmp = readtable('song_list_DS.csv');
+fnames_new = tmp.fname;
+fnames_new = erase(fnames_new,'''');
+fnames_new = replace(fnames_new,'-','_');
+fnames_new = replace(fnames_new,'miind','mind');
+fnames_new = replace(fnames_new,'nite','night');
+fnames_new = erase(fnames_new,'_perkins');
+fnames = erase(fnames,'RollingStone_');
+fnames = erase(fnames,'_dt');
+[~,idx] = ismember(fnames,fnames_new);
+year = tmp.year(idx);
+RollingStone.year = year;
+
+cd('<destination_file_path>')
+save('RollingStone.mat','RollingStone')
+##### SOURCE END #####
+--></body></html>

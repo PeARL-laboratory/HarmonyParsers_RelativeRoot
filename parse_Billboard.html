@@ -1,0 +1,433 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,IE=9,chrome=1"><meta name="generator" content="MATLAB R2019a"><title>Parse the chord symbols in the Billboard data set using the Relative Root encoding scheme.</title><style type="text/css">.rtcContent { padding: 30px; } .S0 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 28.7999992370605px; min-height: 0px; white-space: pre-wrap; color: rgb(213, 80, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 24px; font-weight: normal; text-align: left;  }
+.S1 { margin: 2px 10px 9px 4px; padding: 0px; line-height: 21px; min-height: 0px; white-space: pre-wrap; color: rgb(0, 0, 0); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 14px; font-weight: normal; text-align: left;  }
+.S2 { border-left: 0px none rgb(0, 0, 0); border-right: 0px none rgb(0, 0, 0); border-top: 0px none rgb(0, 0, 0); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 0px; line-height: 16px; min-height: 0px; white-space: pre; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, 'Courier New', monospace; font-size: 12px;  }
+.S3 { margin: 20px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: bold; text-align: left;  }
+.CodeBlock { background-color: #F7F7F7; margin: 10px 0 10px 0;}
+.S4 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 1px solid rgb(233, 233, 233); border-bottom: 0px none rgb(0, 0, 0); border-radius: 4px 4px 0px 0px; padding: 6px 45px 0px 13px; line-height: 17.2339992523193px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, 'Courier New', monospace; font-size: 14px;  }
+.S5 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 0px none rgb(0, 0, 0); border-radius: 0px; padding: 0px 45px 0px 13px; line-height: 17.2339992523193px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, 'Courier New', monospace; font-size: 14px;  }
+.S6 { border-left: 1px solid rgb(233, 233, 233); border-right: 1px solid rgb(233, 233, 233); border-top: 0px none rgb(0, 0, 0); border-bottom: 1px solid rgb(233, 233, 233); border-radius: 0px 0px 4px 4px; padding: 0px 45px 4px 13px; line-height: 17.2339992523193px; min-height: 18px; white-space: nowrap; color: rgb(0, 0, 0); font-family: Menlo, Monaco, Consolas, 'Courier New', monospace; font-size: 14px;  }
+.S7 { margin: 3px 10px 5px 4px; padding: 0px; line-height: 20px; min-height: 0px; white-space: pre-wrap; color: rgb(60, 60, 60); font-family: Helvetica, Arial, sans-serif; font-style: normal; font-size: 20px; font-weight: bold; text-align: left;  }</style></head><body><div class = rtcContent><h1  class = 'S0'><span>Parse the chord symbols in the Billboard data set using the Relative Root encoding scheme.</span></h1><div  class = 'S1'><span style=' font-weight: bold;'>Billboard DATA SET</span></div><div class = 'preformatted-matlab' style = 'margin: 10px 3px 10px 55px; padding: 10px 10px 10px 5px; '><div  class = 'S2'><span style="white-space: pre;"><span>Download: &lt;https://ddmal.music.mcgill.ca/research/The_McGill_Billboard_</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>           Project_(Chord_Analysis_Dataset)/&gt;</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>Citation: John Ashley </span><span style="color: rgb(255, 0, 255);">Burgoyne</span><span>, Jonathan </span><span style="color: rgb(255, 0, 255);">Wild</span><span>, and </span><span style="color: rgb(255, 0, 255);">Ichiro Fujinaga</span><span>, </span><span style="color: rgb(255, 0, 0);">‘</span><span>An </span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>          Expert </span><span style="color: rgb(255, 0, 255);">Ground Truth Set for Audio Chord Recognition and Music </span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>          Analysis</span><span style="color: rgb(255, 0, 0);">’</span><span>, in </span><span style="color: rgb(255, 0, 255);">Proceedings of the 12th International Society </span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>          </span><span style="color: rgb(0, 255, 255);">for </span><span>Music Information </span><span style="color: rgb(255, 0, 255);">Retrieval Conference</span><span>, ed. Anssi Klapuri </span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>          and </span><span style="color: rgb(255, 0, 255);">Colby Leider (Miami, FL, 2011)</span><span>, pp. 633</span><span style="color: rgb(255, 0, 0);">–</span><span>38</span></span></div></div><div  class = 'S1'><span style=' font-weight: bold;'>PARSE -- Relative Root Representation</span><span> </span></div><div class = 'preformatted-matlab' style = 'margin: 10px 3px 10px 55px; padding: 10px 10px 10px 5px; '><div  class = 'S2'><span style="white-space: pre;"><span>Encoding:    &lt;RN&gt;&lt;Quality&gt;&lt;Inversion&gt;&lt;Extensions&gt;</span></span></div></div><div class = 'preformatted-plain' style = 'margin: 10px 3px 10px 55px; padding: 10px 10px 10px 5px; '><div  class = 'S2'><span style="white-space: pre;"><span>   RN         -- Roman numeral encoded in relation to the key. Case</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                 denotes quality of the triad (major or minor).</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                 Named chords (+6, Ct, etc.) are converted to RN roots,</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                 with the names included in the quality slot (e.g., </span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                 #ivGer). Applied dominants (e.g., V/ii) receive </span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                 diatonic equivalents. Chords may also be preceded by a</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                 chromatic accidental relative to the major scale </span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                 (e.g., viio/V --&gt; #ivo):</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                     --  double flat</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                      -  flat </span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                      #  sharp</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                     ##  double sharp</span></span></div></div><div class = 'preformatted-plain' style = 'margin: 10px 3px 10px 55px; padding: 10px 10px 10px 5px; '><div  class = 'S2'><span style="white-space: pre;"><span>   Quality    -- Chord quality:</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                      M  major seventh</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                         minor seventh (no symbol)</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                      d  major RN with minor seventh (minor RN with </span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                      h  half-diminished seventh</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                      o  diminished triad or seventh</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                      +  augmented triad or seventh</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                      p  power (i.e., no 3rd)</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                    Ger  German augmented sixth (never annotated in this</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                         data set)</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                     Fr  French augmented sixth (never annotated in this</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                         data set)</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                     It  Italian augmented sixth (never annotated in</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                         this data set)</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                     Ct  Common-tone diminished seventh (never annotated</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                         in this data set)</span></span></div></div><div class = 'preformatted-plain' style = 'margin: 10px 3px 10px 55px; padding: 10px 10px 10px 5px; '><div  class = 'S2'><span style="white-space: pre;"><span>   Inversion  -- Chord inversion:</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                         root position (no symbol)</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                      6  first inversion triad</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                     64  second inversion triad</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                      7  root position seventh</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                     65  first inversion seventh</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                     43  second inversion seventh</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                     42  third inversion seventh </span></span></div></div><div class = 'preformatted-plain' style = 'margin: 10px 3px 10px 55px; padding: 10px 10px 10px 5px; '><div  class = 'S2'><span style="white-space: pre;"><span>   Extensions -- Suspensions or added tones appear in parentheses, with</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>                 added tones preceded by '+'.</span></span></div></div><div class = 'preformatted-matlab' style = 'margin: 10px 3px 10px 55px; padding: 10px 10px 10px 5px; '><div  class = 'S2'><span style="white-space: pre;"><span>Example:     V(64) (i.e., a cadential six-four)</span></span></div></div><div  class = 'S1'><span style=' font-weight: bold;'>DEPENDENCIES</span></div><div class = 'preformatted-plain' style = 'margin: 10px 3px 10px 55px; padding: 10px 10px 10px 5px; '><div  class = 'S2'><span style="white-space: pre;"><span>              -- None.</span></span></div></div><div  class = 'S1'><span style=' font-weight: bold;'>HISTORY</span></div><div class = 'preformatted-matlab' style = 'margin: 10px 3px 10px 55px; padding: 10px 10px 10px 5px; '><div  class = 'S2'><span style="white-space: pre;"><span>Date:          2.16.2021          </span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>Time:          12:59	</span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>Programmer:    David Sears	    </span></span></div><div  class = 'S2'><span style="white-space: pre;"><span>Version:       MATLAB 9.6 (R2019a, PC)</span></span></div></div><h2  class = 'S3'><span>IMPORT</span></h2><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>warning(</span><span style="color: rgb(255, 0, 255);">'off'</span><span>)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 0);">% Index of songs.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>cd(</span><span style="color: rgb(255, 0, 255);">'&lt;file_path&gt;\McGill_Billboard\all_data\McGill-Billboard'</span><span>)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>fnames = dir;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>fnames = {fnames.name}';</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>fnames(ismember(fnames,{</span><span style="color: rgb(255, 0, 255);">'.' '..'</span><span>})) = [];</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>fnames_idx = </span><span class="warning_squiggle_rte">str2num</span><span>(char(fnames));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 0);">% Import song info.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>cd(</span><span style="color: rgb(255, 0, 255);">'&lt;file_path&gt;\McGill_Billboard'</span><span>)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 0);">%song_info = importdata('billboard-2.0-index.csv');</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>fid = fopen(</span><span style="color: rgb(255, 0, 255);">'billboard-2.0-index_nocommas.csv'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>C = textscan(fid,</span><span style="color: rgb(255, 0, 255);">'%s %s %s %s %s %s %s %s'</span><span>,</span><span style="color: rgb(255, 0, 255);">'Delimiter'</span><span>,</span><span style="color: rgb(255, 0, 255);">','</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>fclose(fid);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>song_info.data = [C{:,1} C{:,2} C{:,3} C{:,4} C{:,5} C{:,6} C{:,7} C{:,8}];</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>song_info.header = song_info.data(1,:);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>song_info.data(1,:) = [];</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>song_info.songnum = </span><span class="warning_squiggle_rte">str2num</span><span>(char(song_info.data(:,1)));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 0);">% Delete song info that doesn't contain chord annotations. (There are 890</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 0);">% annotated songs.)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>[~,idx] = ismember(fnames_idx,song_info.songnum);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>song_info.data = song_info.data(idx,:);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>song_info.year = year(datetime(song_info.data(:,2)));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 0);">% Ignore duplicates. (There are 740 unique songs.)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>names = song_info.data(:,5:6);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>names = regexprep(names, </span><span style="color: rgb(255, 0, 255);">'[.,'') ("!?]'</span><span>, </span><span style="color: rgb(255, 0, 255);">''</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>names = strcat(names(:,1),names(:,2));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>[~,idx] = unique(names);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>files = fnames(idx);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>fnames = strcat(</span><span style="color: rgb(255, 0, 255);">'Billboard_'</span><span>,files);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>song_info.data = song_info.data(idx,:);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>song_info.year = song_info.year(idx);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 0);">% Import key information.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>len = size(fnames,1);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>cd(</span><span style="color: rgb(255, 0, 255);">'&lt;file_path&gt;\McGill_Billboard\all_data\McGill-Billboard'</span><span>)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 255);">for </span><span>i = 1:len</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    cd(files{i})</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    file = dir(</span><span style="color: rgb(255, 0, 255);">'*.txt'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    tmp = importdata(file.name);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    idx = find(contains(tmp,</span><span style="color: rgb(255, 0, 255);">'tonic:'</span><span>));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    keys = tmp(idx);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    keys = strtrim(extractAfter(keys,</span><span style="color: rgb(255, 0, 255);">'tonic:'</span><span>));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    times = 0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 255);">if </span><span>length(keys)&gt;1</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>       </span><span style="color: rgb(0, 255, 255);">for </span><span>j = 2:length(idx)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>           ln = tmp(idx(j)+1);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>           ln = regexp(ln, </span><span style="color: rgb(255, 0, 255);">'(\d+,)*\d+(\.\d*)?'</span><span>, </span><span style="color: rgb(255, 0, 255);">'match'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>           ln = ln{:};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>           </span><span class="warning_squiggle_rte">times</span><span>(j) = </span><span class="warning_squiggle_rte">str2num</span><span>(ln{1});</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>       </span><span style="color: rgb(0, 255, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    data.(fnames{i}).keys = keys;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    data.(fnames{i}).key_onsets = times;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    clear </span><span style="color: rgb(255, 0, 255);">file tmp idx keys times</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    cd </span><span style="color: rgb(255, 0, 255);">..</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 0);">% Import chord data.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>cd(</span><span style="color: rgb(255, 0, 255);">'&lt;file_path&gt;\McGill_Billboard\chord_labels\McGill-Billboard'</span><span>)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 255);">for </span><span>i = 1:len</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    cd(files{i})</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    file = dir(</span><span style="color: rgb(255, 0, 255);">'*.lab'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    tmp = tdfread(file.name,</span><span style="color: rgb(255, 0, 255);">'\t'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    nm = fieldnames(tmp);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    data.(fnames{i}).onsets = tmp.(nm{1});</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    data.(fnames{i}).chords = tmp.(nm{end});</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    clear </span><span style="color: rgb(255, 0, 255);">file tmp nm</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    cd </span><span style="color: rgb(255, 0, 255);">..</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre;"><span style="color: rgb(0, 255, 255);">end</span></span></div></div></div><h2  class = 'S7'><span>PREPROCESS</span></h2><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>PCs = {</span><span style="color: rgb(255, 0, 255);">'Fbb' 'Cbb' 'Gbb' 'Dbb' 'Abb' 'Ebb' 'Bbb' </span><span style="color: rgb(0, 255, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>      </span><span style="color: rgb(255, 0, 255);">'Fb' 'Cb' 'Gb' 'Db' 'Ab' 'Eb' 'Bb' </span><span style="color: rgb(0, 255, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>      </span><span style="color: rgb(255, 0, 255);">'F' 'C' 'G' 'D' 'A' 'E' 'B' </span><span style="color: rgb(0, 255, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>      </span><span style="color: rgb(255, 0, 255);">'F#' 'C#' 'G#' 'D#' 'A#' 'E#' 'B#' </span><span style="color: rgb(0, 255, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>      </span><span style="color: rgb(255, 0, 255);">'F##' 'C##' 'G##' 'D##' 'A##' 'E##' 'B##'</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>  </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>RNs = {</span><span style="color: rgb(255, 0, 255);">'--IV' '--I' '--V' '--II' '--VI' '--III' '--VII' </span><span style="color: rgb(0, 255, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>       </span><span style="color: rgb(255, 0, 255);">'-IV' '-I' '-V' '-II' '-VI' '-III' '-VII' </span><span style="color: rgb(0, 255, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>       </span><span style="color: rgb(255, 0, 255);">'IV' 'I' 'V' 'II' 'VI' 'III' 'VII' </span><span style="color: rgb(0, 255, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>       </span><span style="color: rgb(255, 0, 255);">'#IV' '#I' '#V' '#II' '#VI' '#III' '#VII' </span><span style="color: rgb(0, 255, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>       </span><span style="color: rgb(255, 0, 255);">'##IV' '##I' '##V' '##II' '##VI' '##III' '##VII'</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 255);">for </span><span>i = 1:len</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 0);">% Create variables.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    keys = data.(fnames{i}).keys;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    key_onsets = data.(fnames{i}).key_onsets;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    onsets = data.(fnames{i}).onsets;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    chords = data.(fnames{i}).chords;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    chords = cellstr(chords);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 0);">% Exclude repetitions and nonchords ('X' and 'N').</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    idx = find(contains(chords,{</span><span style="color: rgb(255, 0, 255);">'X' 'N' ':1/1'</span><span>}));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    onsets(idx) = [];</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    chords(idx) = [];</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 0);">% Separate PC roots from remainder info (i.e., after ':').</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    [roots </span><span class="warning_squiggle_rte warningHighlight">remain</span><span>] = strtok(chords,</span><span style="color: rgb(255, 0, 255);">':'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 255);">if </span><span>~isempty(chords)</span></span></div></div></div><h2  class = 'S7'><span>CONVERT (relative root representation)</span></h2><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% RN</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% Gather key annotations.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span class="warning_squiggle_rte">key_onsets</span><span>(end+1) = onsets(end)+1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 255);">for </span><span>j = 2:length(key_onsets)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            idx = find(onsets &gt;= key_onsets(j-1) &amp; onsets &lt; key_onsets(j));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            </span><span class="warning_squiggle_rte">new_keys</span><span>(</span><span class="warning_squiggle_rte warningHighlight">idx</span><span>,1) = keys(j-1);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        keys = new_keys; clear </span><span style="color: rgb(255, 0, 255);">new_keys</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% Convert roots.  </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        [~,keys_idx] = ismember(keys,PCs);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        [~,roots_idx] = ismember(roots,PCs);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        tonic = find(ismember(RNs,</span><span style="color: rgb(255, 0, 255);">'I'</span><span>));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        root_nums = mod(roots_idx - keys_idx+tonic, length(PCs));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        root_RNs = </span><span class="warning_squiggle_rte">[</span><span>RNs(root_nums)]';</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% QUALITY</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% Quality of triads/seventh chords that changes RN and/or form label.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        forms = cell(length(chords),1);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% maj7</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        idx = find(contains(remain,{</span><span style="color: rgb(255, 0, 255);">'maj7' 'maj9'</span><span>}));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        forms(</span><span class="warning_squiggle_rte warningHighlight">idx</span><span>) = {</span><span style="color: rgb(255, 0, 255);">'M'</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% min   </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        idx = find(contains(remain,</span><span style="color: rgb(255, 0, 255);">':min'</span><span>)); </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        root_RNs(idx) = lower(root_RNs(idx));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% dim</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        idx = find(contains(remain,</span><span style="color: rgb(255, 0, 255);">':dim'</span><span>)); </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        root_RNs(idx) = lower(root_RNs(idx));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        forms(idx) = {</span><span style="color: rgb(255, 0, 255);">'o'</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% hdim</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        idx = find(contains(remain,</span><span style="color: rgb(255, 0, 255);">':hdim'</span><span>)); </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        root_RNs(idx) = lower(root_RNs(idx));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        forms(idx) = {</span><span style="color: rgb(255, 0, 255);">'h'</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% aug</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        idx = find(contains(remain,</span><span style="color: rgb(255, 0, 255);">':aug'</span><span>)); </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        forms(</span><span class="warning_squiggle_rte warningHighlight">idx</span><span>) = {</span><span style="color: rgb(255, 0, 255);">'+'</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% A maj chord with a non-V root and a 7th needs a 'd'.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        idx = isstrprop(root_RNs,</span><span style="color: rgb(255, 0, 255);">'upper'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 255);">for </span><span>j = 1:length(idx)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            </span><span style="color: rgb(0, 255, 255);">if </span><span>any(idx{j})==1</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>                </span><span class="warning_squiggle_rte">idx2</span><span>(j,1) = 1;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            </span><span style="color: rgb(0, 255, 255);">else </span><span class="warning_squiggle_rte">idx2</span><span>(j,1) = 0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            </span><span style="color: rgb(0, 255, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        idx = find(idx2==1);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        idx2 = find((ismember(remain,</span><span style="color: rgb(255, 0, 255);">':7'</span><span>) | contains(remain,</span><span style="color: rgb(255, 0, 255);">'b7'</span><span>)) &amp; ~ismember(root_RNs,</span><span style="color: rgb(255, 0, 255);">'V'</span><span>));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        idx = intersect(idx,idx2);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        forms(idx) = {</span><span style="color: rgb(255, 0, 255);">'d'</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% 5 = power chord</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        idx = find(contains(remain,</span><span style="color: rgb(255, 0, 255);">':5'</span><span>));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        forms(idx) = {</span><span style="color: rgb(255, 0, 255);">'p'</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        p_idx = idx;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% INVERSION</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% Replace chordal extensions with '7' (you're going to put the</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% extensions in changes).</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        [ext </span><span class="warning_squiggle_rte warningHighlight">inv</span><span>] = strtok(remain,</span><span style="color: rgb(255, 0, 255);">'/'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        ext = replace(ext,</span><span style="color: rgb(255, 0, 255);">'b'</span><span>,</span><span style="color: rgb(255, 0, 255);">'-'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        [ext </span><span class="warning_squiggle_rte warningHighlight">changes</span><span>] = strtok(ext,</span><span style="color: rgb(255, 0, 255);">'('</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        inv = erase(inv,{</span><span style="color: rgb(255, 0, 255);">'/' 'b' '#'</span><span>});</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        ext = erase(ext,{</span><span style="color: rgb(255, 0, 255);">':5' ':minmaj' ':maj6' ':maj' ':min' ':dim' ':aug' ':hdim' ':sus2' ':sus4'</span><span>});</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        ext = replace(ext,{</span><span style="color: rgb(255, 0, 255);">':7' ':9' ':11' ':13' '9'</span><span>},</span><span style="color: rgb(255, 0, 255);">'7'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        inv = erase(inv,{</span><span style="color: rgb(255, 0, 255);">'1' '2' '4' '6' '8'</span><span>});</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        idx = find(contains(changes,{</span><span style="color: rgb(255, 0, 255);">'7' '9' '11' '13'</span><span>})); </span><span style="color: rgb(0, 255, 0);">% Add a 7th if chordal extensions appear in changes.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        ext(</span><span class="warning_squiggle_rte warningHighlight">idx</span><span>) = {</span><span style="color: rgb(255, 0, 255);">'7'</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% Create the inversions.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        figbass = ext;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        figbass(~ismember(ext,</span><span style="color: rgb(255, 0, 255);">'7'</span><span>) &amp; ismember(inv,</span><span style="color: rgb(255, 0, 255);">'3'</span><span>)) = {</span><span style="color: rgb(255, 0, 255);">'6'</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        figbass(ismember(ext,</span><span style="color: rgb(255, 0, 255);">'7'</span><span>) &amp; ismember(inv,</span><span style="color: rgb(255, 0, 255);">'3'</span><span>)) = {</span><span style="color: rgb(255, 0, 255);">'65'</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        figbass(~ismember(ext,</span><span style="color: rgb(255, 0, 255);">'7'</span><span>) &amp; ismember(inv,</span><span style="color: rgb(255, 0, 255);">'5'</span><span>)) = {</span><span style="color: rgb(255, 0, 255);">'64'</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        figbass(ismember(ext,</span><span style="color: rgb(255, 0, 255);">'7'</span><span>) &amp; ismember(inv,</span><span style="color: rgb(255, 0, 255);">'5'</span><span>)) = {</span><span style="color: rgb(255, 0, 255);">'43'</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        figbass(ismember(inv,</span><span style="color: rgb(255, 0, 255);">'7'</span><span>)) = {</span><span style="color: rgb(255, 0, 255);">'42'</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% Ignore '5' annotations in figbass for power chords.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        figbass(p_idx) = {</span><span style="color: rgb(255, 0, 255);">''</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>   </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% EXTENSIONS</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        [ext </span><span class="warning_squiggle_rte warningHighlight">inv</span><span>] = strtok(remain,</span><span style="color: rgb(255, 0, 255);">'/'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        ext = replace(ext,</span><span style="color: rgb(255, 0, 255);">'b'</span><span>,</span><span style="color: rgb(255, 0, 255);">'-'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        inv = replace(inv,</span><span style="color: rgb(255, 0, 255);">'b'</span><span>,</span><span style="color: rgb(255, 0, 255);">'-'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        [ext </span><span class="warning_squiggle_rte warningHighlight">changes</span><span>] = strtok(ext,</span><span style="color: rgb(255, 0, 255);">'('</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        changes = erase(changes,{</span><span style="color: rgb(255, 0, 255);">'(' ')'</span><span>});</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% Move extensions to changes.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        ext = erase(ext,{</span><span style="color: rgb(255, 0, 255);">':' 'maj' 'min' 'aug' 'dim' 'hdim' 'sus' '7'</span><span>});</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        ext = replace(ext,{</span><span style="color: rgb(255, 0, 255);">'2' '4' '6' '9' '11' '13'</span><span>},{</span><span style="color: rgb(255, 0, 255);">'2,' '4,' '6,' '9,' '11,' '13,'</span><span>});</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        changes = strcat(changes,</span><span style="color: rgb(255, 0, 255);">','</span><span>,ext);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% Move inverted basses to changes that aren't 3, 5, or 7</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        inv = erase(inv,{</span><span style="color: rgb(255, 0, 255);">'3' '5' '7' '-3' '-5' '-7' '/'</span><span>});</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        changes = strcat(changes,</span><span style="color: rgb(255, 0, 255);">','</span><span>,inv);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% Ignore '5' annotations in changes for power chords.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        changes(p_idx) = erase(changes(p_idx),</span><span style="color: rgb(255, 0, 255);">'5'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% Add cadential six-four 'V(64)' to I64-V progressions.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        idx = find((strcmp(root_RNs,</span><span style="color: rgb(255, 0, 255);">'I'</span><span>) | strcmp(root_RNs,</span><span style="color: rgb(255, 0, 255);">'i'</span><span>)) &amp; strcmp(figbass,</span><span style="color: rgb(255, 0, 255);">'64'</span><span>));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 255);">if </span><span>~isempty(idx) &amp;&amp; idx(end)==length(chords)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            idx(end) = [];</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        tmp = [root_RNs(idx) root_RNs(idx+1)];</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 255);">if </span><span>~isempty(tmp)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            change = strcmp(tmp(:,2),</span><span style="color: rgb(255, 0, 255);">'V'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            tmp = tmp(:,1);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            tmp(change) = {</span><span style="color: rgb(255, 0, 255);">'V'</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            root_RNs(idx) = tmp;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            changes(idx(change)) = strcat(changes(idx(change)),</span><span style="color: rgb(255, 0, 255);">'6,4'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            figbass(idx(change)) = erase(figbass(idx(change)),</span><span style="color: rgb(255, 0, 255);">'64'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% Tokenize extensions and separate accidentals.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        t = cellfun(@(x) length(strfind(x,</span><span style="color: rgb(255, 0, 255);">','</span><span>)),changes,</span><span style="color: rgb(255, 0, 255);">'UniformOutput'</span><span>,false);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        t = max(cell2mat(t));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        ext_tab = cell(length(changes),t+1);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        acc_tab = ext_tab;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        tmp = changes;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 255);">for </span><span>j = 1:t+1</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            [ext_tab(:,j) </span><span class="warning_squiggle_rte warningHighlight">tmp</span><span>] = </span><span class="warning_squiggle_rte">strtok</span><span>(tmp,</span><span style="color: rgb(255, 0, 255);">','</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            idx = find(contains(ext_tab(:,j),</span><span style="color: rgb(255, 0, 255);">'#'</span><span>));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            acc_tab(</span><span class="warning_squiggle_rte warningHighlight">idx</span><span>,j) = {</span><span style="color: rgb(255, 0, 255);">'#'</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            idx = find(contains(ext_tab(:,j),</span><span style="color: rgb(255, 0, 255);">'-'</span><span>));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            acc_tab(</span><span class="warning_squiggle_rte warningHighlight">idx</span><span>,j) = {</span><span style="color: rgb(255, 0, 255);">'-'</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            clear </span><span style="color: rgb(255, 0, 255);">idx</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        ext_tab = erase(ext_tab,{</span><span style="color: rgb(255, 0, 255);">'-' '#'</span><span>});</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        ext_tab(cellfun(@isempty, ext_tab)) = {</span><span style="color: rgb(255, 0, 255);">'0'</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        ext_tab = str2double(ext_tab);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        [ext_tab </span><span class="warning_squiggle_rte warningHighlight">idx</span><span>] = sort(ext_tab,2,</span><span style="color: rgb(255, 0, 255);">'descend'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% Delete repetitions of extensions.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        tmp = ext_tab;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        tmp(tmp==0) = nan;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        idxrep = [false(size(ext_tab,1),1) ~diff(ext_tab,1,2)];</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        idxrep(isnan(tmp)) = 0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        ext_tab(idxrep==1) = 0;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 255);">for </span><span>j = 1:size(ext_tab,1)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            acc_tab(j,:) = acc_tab(j,idx(j,:));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        ext_tab = arrayfun(@num2str, ext_tab, </span><span style="color: rgb(255, 0, 255);">'UniformOutput'</span><span>, 0);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        idx = find(ismember(ext_tab,</span><span style="color: rgb(255, 0, 255);">'0'</span><span>));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        ext_tab(</span><span class="warning_squiggle_rte warningHighlight">idx</span><span>) = {</span><span style="color: rgb(255, 0, 255);">''</span><span>};  </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% Put ext and acc back together.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span class="warning_squiggle_rte">idx</span><span> = find(~cellfun(@isempty,ext_tab(:,2:end)));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        tab = strcat(acc_tab,ext_tab);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% Delete extensions that already appear in figbass.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        idx = [];</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 255);">for </span><span>j = 1:size(tab,1)</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            </span><span class="warning_squiggle_rte">idx</span><span> = [idx; ismember(tab(j,:),figbass(j))];</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        tab(idx==1) = {</span><span style="color: rgb(255, 0, 255);">''</span><span>};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>            </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% Create final changes variable.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        tab = join(tab);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        changes = strrep(tab,</span><span style="color: rgb(255, 0, 255);">' '</span><span>,</span><span style="color: rgb(255, 0, 255);">''</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% Delete -7 in changes if 7 appears in figbass.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        idx = find(ismember(figbass,</span><span style="color: rgb(255, 0, 255);">'7'</span><span>) &amp; contains(changes,</span><span style="color: rgb(255, 0, 255);">'-7'</span><span>));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        changes(idx) = erase(changes(idx),</span><span style="color: rgb(255, 0, 255);">'-7'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        </span><span style="color: rgb(0, 255, 0);">% Concatenate chord tokens.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        tokens = strcat(root_RNs,forms,figbass,</span><span style="color: rgb(255, 0, 255);">'('</span><span>,changes,</span><span style="color: rgb(255, 0, 255);">')'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        tokens = erase(tokens, {</span><span style="color: rgb(255, 0, 255);">'()' ':'</span><span>});</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        clear </span><span style="color: rgb(255, 0, 255);">key_onsets onsets roots remain keys_idx roots_idx root_nums forms ext inv </span><span style="color: rgb(0, 255, 255);">...</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>              </span><span style="color: rgb(255, 0, 255);">changes t ext_tab acc_tab tmp tab idx idx2 p_idx idxrep</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 255);">else</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        tokens = {};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>        root_RNs = {};</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    </span><span style="color: rgb(0, 255, 0);">% Create structure.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    Billboard.chords.(fnames{i}) = strcat(chords,</span><span style="color: rgb(255, 0, 255);">', key='</span><span>,keys);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    Billboard.RNs.(fnames{i}) = tokens;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    Billboard.rootRNs.(fnames{i}) = root_RNs;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    clear </span><span style="color: rgb(255, 0, 255);">tokens root_RNs chords keys</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 0);">% Delete songs with no chord annotations. </span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 255);">for </span><span>i=1:len</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>    sequence.(fnames{i}) = cellstr(Billboard.RNs.(fnames{i}));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 255);">end</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>fnames = fieldnames(sequence);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>idx = cellfun(@(x) isempty(sequence.(x)), fnames);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>sequence = rmfield(sequence, fnames(idx));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>Billboard.RNs = rmfield(Billboard.RNs, fnames(idx));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>Billboard.rootRNs = rmfield(Billboard.rootRNs, fnames(idx));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>Billboard.chords = rmfield(Billboard.chords, fnames(idx));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>fnames(idx) = [];</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 0);">% Alphabet</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>chords = cellfun(@(x) cellstr(sequence.(x)), fnames, </span><span style="color: rgb(255, 0, 255);">'UniformOutput'</span><span>, false);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>alphabet = unique(vertcat(chords{:}));</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>Billboard.fnames = fnames;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>Billboard.alphabet = alphabet;</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span style="color: rgb(0, 255, 0);">% Get year of composition for fnames.</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>tmp = erase(fnames,</span><span style="color: rgb(255, 0, 255);">'Billboard_'</span><span>);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>tmp = str2double(tmp);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>songs = song_info.data(:,1);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>songs = str2double(songs);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>[~,idx] = ismember(tmp,songs);</span></span></div></div><div class="inlineWrapper"><div  class = 'S5'><span style="white-space: pre;"><span>year = song_info.year(idx);</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre;"><span>Billboard.year = year;</span></span></div></div></div><h2  class = 'S7'><span>EXPORT</span></h2><div class="CodeBlock"><div class="inlineWrapper"><div  class = 'S4'><span style="white-space: pre;"><span>cd(</span><span style="color: rgb(255, 0, 255);">'&lt;destination_file_path&gt;'</span><span>)</span></span></div></div><div class="inlineWrapper"><div  class = 'S6'><span style="white-space: pre;"><span>save(</span><span style="color: rgb(255, 0, 255);">'Billboard.mat'</span><span>,</span><span style="color: rgb(255, 0, 255);">'Billboard'</span><span>)</span></span></div></div></div></div>
+<br>
+<!-- 
+##### SOURCE BEGIN #####
+%% Parse the chord symbols in the Billboard data set using the Relative Root encoding scheme.
+% *Billboard DATA SET*
+%%
+% 
+%   Download: <https://ddmal.music.mcgill.ca/research/The_McGill_Billboard_
+%              Project_(Chord_Analysis_Dataset)/>
+%   Citation: John Ashley Burgoyne, Jonathan Wild, and Ichiro Fujinaga, ‘An 
+%             Expert Ground Truth Set for Audio Chord Recognition and Music 
+%             Analysis’, in Proceedings of the 12th International Society 
+%             for Music Information Retrieval Conference, ed. Anssi Klapuri 
+%             and Colby Leider (Miami, FL, 2011), pp. 633–38
+%
+%% 
+% *PARSE REPLACE_WITH_DASH_DASH Relative Root Representation* 
+%%
+% 
+%   Encoding:    <RN><Quality><Inversion><Extensions>
+%
+%%
+% 
+%     RN         REPLACE_WITH_DASH_DASH Roman numeral encoded in relation to the key. Case
+%                   denotes quality of the triad (major or minor).
+%                   Named chords (+6, Ct, etc.) are converted to RN roots,
+%                   with the names included in the quality slot (e.g., 
+%                   #ivGer). Applied dominants (e.g., V/ii) receive 
+%                   diatonic equivalents. Chords may also be preceded by a
+%                   chromatic accidental relative to the major scale 
+%                   (e.g., viio/V REPLACE_WITH_DASH_DASH> #ivo):
+%                       REPLACE_WITH_DASH_DASH  double flat
+%                        -  flat 
+%                        #  sharp
+%                       ##  double sharp
+%
+%%
+% 
+%     Quality    REPLACE_WITH_DASH_DASH Chord quality:
+%                        M  major seventh
+%                           minor seventh (no symbol)
+%                        d  major RN with minor seventh (minor RN with 
+%                        h  half-diminished seventh
+%                        o  diminished triad or seventh
+%                        +  augmented triad or seventh
+%                        p  power (i.e., no 3rd)
+%                      Ger  German augmented sixth (never annotated in this
+%                           data set)
+%                       Fr  French augmented sixth (never annotated in this
+%                           data set)
+%                       It  Italian augmented sixth (never annotated in
+%                           this data set)
+%                       Ct  Common-tone diminished seventh (never annotated
+%                           in this data set)
+%
+%%
+% 
+%     Inversion  REPLACE_WITH_DASH_DASH Chord inversion:
+%                           root position (no symbol)
+%                        6  first inversion triad
+%                       64  second inversion triad
+%                        7  root position seventh
+%                       65  first inversion seventh
+%                       43  second inversion seventh
+%                       42  third inversion seventh 
+%
+%%
+% 
+%     Extensions REPLACE_WITH_DASH_DASH Suspensions or added tones appear in parentheses, with
+%                   added tones preceded by '+'.
+%
+%%
+% 
+%   Example:     V(64) (i.e., a cadential six-four)
+%
+%% 
+% *DEPENDENCIES*
+%%
+% 
+%                REPLACE_WITH_DASH_DASH None.
+%
+%% 
+% *HISTORY*
+%%
+% 
+%   Date:          2.16.2021          
+%   Time:          12:59	
+%   Programmer:    David Sears	    
+%   Version:       MATLAB 9.6 (R2019a, PC)
+%
+%% IMPORT
+
+warning('off')
+
+% Index of songs.
+cd('<file_path>\McGill_Billboard\all_data\McGill-Billboard')
+fnames = dir;
+fnames = {fnames.name}';
+fnames(ismember(fnames,{'.' '..'})) = [];
+fnames_idx = str2num(char(fnames));
+
+% Import song info.
+cd('<file_path>\McGill_Billboard')
+%song_info = importdata('billboard-2.0-index.csv');
+fid = fopen('billboard-2.0-index_nocommas.csv');
+C = textscan(fid,'%s %s %s %s %s %s %s %s','Delimiter',',');
+fclose(fid);
+song_info.data = [C{:,1} C{:,2} C{:,3} C{:,4} C{:,5} C{:,6} C{:,7} C{:,8}];
+song_info.header = song_info.data(1,:);
+song_info.data(1,:) = [];
+song_info.songnum = str2num(char(song_info.data(:,1)));
+
+% Delete song info that doesn't contain chord annotations. (There are 890
+% annotated songs.)
+[~,idx] = ismember(fnames_idx,song_info.songnum);
+song_info.data = song_info.data(idx,:);
+song_info.year = year(datetime(song_info.data(:,2)));
+
+% Ignore duplicates. (There are 740 unique songs.)
+names = song_info.data(:,5:6);
+names = regexprep(names, '[.,'') ("!?]', '');
+names = strcat(names(:,1),names(:,2));
+[~,idx] = unique(names);
+files = fnames(idx);
+fnames = strcat('Billboard_',files);
+song_info.data = song_info.data(idx,:);
+song_info.year = song_info.year(idx);
+
+% Import key information.
+len = size(fnames,1);
+cd('<file_path>\McGill_Billboard\all_data\McGill-Billboard')
+for i = 1:len
+    cd(files{i})
+    file = dir('*.txt');
+    tmp = importdata(file.name);
+    idx = find(contains(tmp,'tonic:'));
+    keys = tmp(idx);
+    keys = strtrim(extractAfter(keys,'tonic:'));
+    times = 0;
+    if length(keys)>1
+       for j = 2:length(idx)
+           ln = tmp(idx(j)+1);
+           ln = regexp(ln, '(\d+,)*\d+(\.\d*)?', 'match');
+           ln = ln{:};
+           times(j) = str2num(ln{1});
+       end
+    end
+    data.(fnames{i}).keys = keys;
+    data.(fnames{i}).key_onsets = times;
+    clear file tmp idx keys times
+    cd ..
+end
+
+% Import chord data.
+cd('<file_path>\McGill_Billboard\chord_labels\McGill-Billboard')
+for i = 1:len
+    cd(files{i})
+    file = dir('*.lab');
+    tmp = tdfread(file.name,'\t');
+    nm = fieldnames(tmp);
+    data.(fnames{i}).onsets = tmp.(nm{1});
+    data.(fnames{i}).chords = tmp.(nm{end});
+    clear file tmp nm
+    cd ..
+end
+%% PREPROCESS
+
+PCs = {'Fbb' 'Cbb' 'Gbb' 'Dbb' 'Abb' 'Ebb' 'Bbb' ...
+      'Fb' 'Cb' 'Gb' 'Db' 'Ab' 'Eb' 'Bb' ...
+      'F' 'C' 'G' 'D' 'A' 'E' 'B' ...
+      'F#' 'C#' 'G#' 'D#' 'A#' 'E#' 'B#' ...
+      'F##' 'C##' 'G##' 'D##' 'A##' 'E##' 'B##'};
+  
+RNs = {'REPLACE_WITH_DASH_DASHIV' 'REPLACE_WITH_DASH_DASHI' 'REPLACE_WITH_DASH_DASHV' 'REPLACE_WITH_DASH_DASHII' 'REPLACE_WITH_DASH_DASHVI' 'REPLACE_WITH_DASH_DASHIII' 'REPLACE_WITH_DASH_DASHVII' ...
+       '-IV' '-I' '-V' '-II' '-VI' '-III' '-VII' ...
+       'IV' 'I' 'V' 'II' 'VI' 'III' 'VII' ...
+       '#IV' '#I' '#V' '#II' '#VI' '#III' '#VII' ...
+       '##IV' '##I' '##V' '##II' '##VI' '##III' '##VII'};
+for i = 1:len
+
+    % Create variables.
+    keys = data.(fnames{i}).keys;
+    key_onsets = data.(fnames{i}).key_onsets;
+    onsets = data.(fnames{i}).onsets;
+    chords = data.(fnames{i}).chords;
+    chords = cellstr(chords);
+    
+    % Exclude repetitions and nonchords ('X' and 'N').
+    idx = find(contains(chords,{'X' 'N' ':1/1'}));
+    onsets(idx) = [];
+    chords(idx) = [];
+    
+    % Separate PC roots from remainder info (i.e., after ':').
+    [roots remain] = strtok(chords,':');
+    
+    if ~isempty(chords)
+%% CONVERT (relative root representation)
+
+        % RN
+        
+        % Gather key annotations.
+        key_onsets(end+1) = onsets(end)+1;
+        for j = 2:length(key_onsets)
+            idx = find(onsets >= key_onsets(j-1) & onsets < key_onsets(j));
+            new_keys(idx,1) = keys(j-1);
+        end
+        keys = new_keys; clear new_keys
+
+        % Convert roots.  
+        [~,keys_idx] = ismember(keys,PCs);
+        [~,roots_idx] = ismember(roots,PCs);
+        tonic = find(ismember(RNs,'I'));
+        root_nums = mod(roots_idx - keys_idx+tonic, length(PCs));
+        root_RNs = [RNs(root_nums)]';
+
+        % QUALITY
+        
+        % Quality of triads/seventh chords that changes RN and/or form label.
+        forms = cell(length(chords),1);
+        
+        % maj7
+        idx = find(contains(remain,{'maj7' 'maj9'}));
+        forms(idx) = {'M'};
+        
+        % min   
+        idx = find(contains(remain,':min')); 
+        root_RNs(idx) = lower(root_RNs(idx));
+        
+        % dim
+        idx = find(contains(remain,':dim')); 
+        root_RNs(idx) = lower(root_RNs(idx));
+        forms(idx) = {'o'};
+
+        % hdim
+        idx = find(contains(remain,':hdim')); 
+        root_RNs(idx) = lower(root_RNs(idx));
+        forms(idx) = {'h'};
+
+        % aug
+        idx = find(contains(remain,':aug')); 
+        forms(idx) = {'+'};
+
+        % A maj chord with a non-V root and a 7th needs a 'd'.
+        idx = isstrprop(root_RNs,'upper');
+        for j = 1:length(idx)
+            if any(idx{j})==1
+                idx2(j,1) = 1;
+            else idx2(j,1) = 0;
+            end
+        end
+        idx = find(idx2==1);
+        idx2 = find((ismember(remain,':7') | contains(remain,'b7')) & ~ismember(root_RNs,'V'));
+        idx = intersect(idx,idx2);
+        forms(idx) = {'d'};
+        
+        % 5 = power chord
+        idx = find(contains(remain,':5'));
+        forms(idx) = {'p'};
+        p_idx = idx;
+        
+        
+        % INVERSION
+        
+        % Replace chordal extensions with '7' (you're going to put the
+        % extensions in changes).
+        [ext inv] = strtok(remain,'/');
+        ext = replace(ext,'b','-');
+        [ext changes] = strtok(ext,'(');
+        inv = erase(inv,{'/' 'b' '#'});
+        ext = erase(ext,{':5' ':minmaj' ':maj6' ':maj' ':min' ':dim' ':aug' ':hdim' ':sus2' ':sus4'});
+        ext = replace(ext,{':7' ':9' ':11' ':13' '9'},'7');
+        inv = erase(inv,{'1' '2' '4' '6' '8'});
+        idx = find(contains(changes,{'7' '9' '11' '13'})); % Add a 7th if chordal extensions appear in changes.
+        ext(idx) = {'7'};
+        
+        % Create the inversions.
+        figbass = ext;
+        figbass(~ismember(ext,'7') & ismember(inv,'3')) = {'6'};
+        figbass(ismember(ext,'7') & ismember(inv,'3')) = {'65'};
+        figbass(~ismember(ext,'7') & ismember(inv,'5')) = {'64'};
+        figbass(ismember(ext,'7') & ismember(inv,'5')) = {'43'};
+        figbass(ismember(inv,'7')) = {'42'};
+        
+        % Ignore '5' annotations in figbass for power chords.
+        figbass(p_idx) = {''};
+   
+        
+        % EXTENSIONS
+        [ext inv] = strtok(remain,'/');
+        ext = replace(ext,'b','-');
+        inv = replace(inv,'b','-');
+        [ext changes] = strtok(ext,'(');
+        changes = erase(changes,{'(' ')'});
+        
+        % Move extensions to changes.
+        ext = erase(ext,{':' 'maj' 'min' 'aug' 'dim' 'hdim' 'sus' '7'});
+        ext = replace(ext,{'2' '4' '6' '9' '11' '13'},{'2,' '4,' '6,' '9,' '11,' '13,'});
+        changes = strcat(changes,',',ext);
+
+        % Move inverted basses to changes that aren't 3, 5, or 7
+        inv = erase(inv,{'3' '5' '7' '-3' '-5' '-7' '/'});
+        changes = strcat(changes,',',inv);
+        
+        % Ignore '5' annotations in changes for power chords.
+        changes(p_idx) = erase(changes(p_idx),'5');
+        
+        % Add cadential six-four 'V(64)' to I64-V progressions.
+        idx = find((strcmp(root_RNs,'I') | strcmp(root_RNs,'i')) & strcmp(figbass,'64'));
+        if ~isempty(idx) && idx(end)==length(chords)
+            idx(end) = [];
+        end
+        tmp = [root_RNs(idx) root_RNs(idx+1)];
+        if ~isempty(tmp)
+            change = strcmp(tmp(:,2),'V');
+            tmp = tmp(:,1);
+            tmp(change) = {'V'};
+            root_RNs(idx) = tmp;
+            changes(idx(change)) = strcat(changes(idx(change)),'6,4');
+            figbass(idx(change)) = erase(figbass(idx(change)),'64');
+        end
+
+        % Tokenize extensions and separate accidentals.
+        t = cellfun(@(x) length(strfind(x,',')),changes,'UniformOutput',false);
+        t = max(cell2mat(t));
+        ext_tab = cell(length(changes),t+1);
+        acc_tab = ext_tab;
+        tmp = changes;
+        for j = 1:t+1
+            [ext_tab(:,j) tmp] = strtok(tmp,',');
+            idx = find(contains(ext_tab(:,j),'#'));
+            acc_tab(idx,j) = {'#'};
+            idx = find(contains(ext_tab(:,j),'-'));
+            acc_tab(idx,j) = {'-'};
+            clear idx
+        end
+        ext_tab = erase(ext_tab,{'-' '#'});
+        ext_tab(cellfun(@isempty, ext_tab)) = {'0'};
+        ext_tab = str2double(ext_tab);
+        [ext_tab idx] = sort(ext_tab,2,'descend');
+        
+        % Delete repetitions of extensions.
+        tmp = ext_tab;
+        tmp(tmp==0) = nan;
+        idxrep = [false(size(ext_tab,1),1) ~diff(ext_tab,1,2)];
+        idxrep(isnan(tmp)) = 0;
+        ext_tab(idxrep==1) = 0;
+        
+        for j = 1:size(ext_tab,1)
+            acc_tab(j,:) = acc_tab(j,idx(j,:));
+        end
+        ext_tab = arrayfun(@num2str, ext_tab, 'UniformOutput', 0);
+        idx = find(ismember(ext_tab,'0'));
+        ext_tab(idx) = {''};  
+        
+        % Put ext and acc back together.
+        idx = find(~cellfun(@isempty,ext_tab(:,2:end)));
+        tab = strcat(acc_tab,ext_tab);
+        
+        % Delete extensions that already appear in figbass.
+        idx = [];
+        for j = 1:size(tab,1)
+            idx = [idx; ismember(tab(j,:),figbass(j))];
+        end
+        tab(idx==1) = {''};
+            
+        % Create final changes variable.
+        tab = join(tab);
+        changes = strrep(tab,' ','');
+        
+        % Delete -7 in changes if 7 appears in figbass.
+        idx = find(ismember(figbass,'7') & contains(changes,'-7'));
+        changes(idx) = erase(changes(idx),'-7');
+        
+        % Concatenate chord tokens.
+        tokens = strcat(root_RNs,forms,figbass,'(',changes,')');
+        tokens = erase(tokens, {'()' ':'});
+
+        clear key_onsets onsets roots remain keys_idx roots_idx root_nums forms ext inv ...
+              changes t ext_tab acc_tab tmp tab idx idx2 p_idx idxrep
+    else
+        tokens = {};
+        root_RNs = {};
+    end
+    
+    % Create structure.
+    Billboard.chords.(fnames{i}) = strcat(chords,', key=',keys);
+    Billboard.RNs.(fnames{i}) = tokens;
+    Billboard.rootRNs.(fnames{i}) = root_RNs;
+    clear tokens root_RNs chords keys
+end
+
+% Delete songs with no chord annotations. 
+for i=1:len
+    sequence.(fnames{i}) = cellstr(Billboard.RNs.(fnames{i}));
+end
+fnames = fieldnames(sequence);
+idx = cellfun(@(x) isempty(sequence.(x)), fnames);
+sequence = rmfield(sequence, fnames(idx));
+Billboard.RNs = rmfield(Billboard.RNs, fnames(idx));
+Billboard.rootRNs = rmfield(Billboard.rootRNs, fnames(idx));
+Billboard.chords = rmfield(Billboard.chords, fnames(idx));
+fnames(idx) = [];
+
+% Alphabet
+chords = cellfun(@(x) cellstr(sequence.(x)), fnames, 'UniformOutput', false);
+alphabet = unique(vertcat(chords{:}));
+Billboard.fnames = fnames;
+Billboard.alphabet = alphabet;
+
+% Get year of composition for fnames.
+tmp = erase(fnames,'Billboard_');
+tmp = str2double(tmp);
+songs = song_info.data(:,1);
+songs = str2double(songs);
+[~,idx] = ismember(tmp,songs);
+year = song_info.year(idx);
+Billboard.year = year;
+%% EXPORT
+
+cd('<destination_file_path>')
+save('Billboard.mat','Billboard')
+##### SOURCE END #####
+--></body></html>
