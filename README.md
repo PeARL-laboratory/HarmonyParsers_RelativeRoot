@@ -1,7 +1,5 @@
 # HarmonyParsers_RelativeRoot
-
-   Harmony Parsers for the Relative Root Encoding Scheme
-
+Harmony Parsers for the Relative Root Encoding Scheme
 
       PARSE -- Relative Root Representation 
 
