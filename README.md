@@ -1,4 +1,4 @@
-# HarmonyParsers_RelativeRoot
+# HarmonyParsers_TriadicProgressions
 Harmony Parsers for the Relative Root Encoding Scheme
 
       PARSE -- Relative Root Representation 
